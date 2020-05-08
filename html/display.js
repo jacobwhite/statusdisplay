@@ -59,25 +59,37 @@ function handle(e){
   //$.get(url).then(function(data){ $.get("https://photar.net/oncall/remove/?ip="+data+"&displayName="+oldDisplayName)});
 }
 
-function connect(){
-	if(connection.readyState === WebSocket.CLOSED){
-		connection = new WebSocket(url);
+function register(){
+	if(connection.readyState === WebSocket.OPEN){
+		updateSound.play();
+		var msg = {
+			type: "register",
+			name: localStorage.displayName,
+			date: Date.now()
+		}
+		connection.send(JSON.stringify(msg));
+		console.log("registered");
 	}
+	else {
+		console.log("websoket open but not ready?");
+		console.log(connection.readyState);
+	}
+}
+
+function connect(){
+	connection = new WebSocket(url);
 	$("#connectButton").hide();
-	updateSound.play();
 	console.log("connecting...");
 
-	var msg = {
-		type: "register",
-		name: localStorage.displayName,
-		date: Date.now()
+	connection.onopen = function(e){
+		register();
 	}
-	connection.send(JSON.stringify(msg));
-	console.log("registered");
+	
 
 	connection.onclose = function(e){
 		console.log("socket closed, reconnecting in 1 second. ", e.reason);
-		$("#connectButton").show();
+		connection.onopen = null;
+		//$("#connectButton").show();
 		setTimeout(function() {
 			connect();
 		}, 1000);
