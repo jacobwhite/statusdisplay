@@ -1,15 +1,18 @@
 var url = 'ws://'+location.hostname + ":8080";
 
-const connection = new WebSocket(url)
+var connection = new WebSocket(url)
 
 connect();
 function connect(){
+	if(connection.readyState === WebSocket.CLOSED){
+		connection = new WebSocket(url);
+	}
 	connection.onopen = (error) => {
-	console.log("connected");
-	var msg = {
-		type: "getStatus"
-	};
-	connection.send(JSON.stringify(msg));
+		console.log("connected");
+		var msg = {
+			type: "getStatus"
+		};
+		connection.send(JSON.stringify(msg));
 	}
 
 	connection.onerror = (error) => {
