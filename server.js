@@ -12,9 +12,9 @@ const querystring = require('querystring');
 const fs = require("fs");
 
 const server = http.createServer((req, res) => {
-  console.log(req.url);
+  //console.log(req.url);
   let parsedURL = url.parse(req.url);
-  console.log(parsedURL.pathname);
+  //console.log(parsedURL.pathname);
   
   switch(parsedURL.pathname){
     case "/":
@@ -58,7 +58,7 @@ const server = http.createServer((req, res) => {
 			res.write("not found");
 		}
 		else {
-			console.log("extension",extension);
+			//console.log("extension",extension);
 		  switch(extension){
 			case "odf":
 			  mimetype="font/opentype";
