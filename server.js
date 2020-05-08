@@ -26,29 +26,6 @@ const server = http.createServer((req, res) => {
       broadcastStatus();
       res.end('{"result":"success","status":"'+status+'","color":"'+color+'"}');
     break;
-/*
-	case "/display.html":
-    fs.readFile("display.html", function (err, data) {
-      res.writeHead(200, {'Content-Type': 'text/html'});
-      res.write(data);
-      res.end();
-	});
-    break;
-	case "/display.js":
-    fs.readFile("display.js", function (err, data) {
-      res.writeHead(200, {'Content-Type': 'text/html'});
-      res.write(data);
-      res.end();
-	});
-    break;
-	case "/stylesheet.js":
-    fs.readFile("stylesheet.js", function (err, data) {
-      res.writeHead(200, {'Content-Type': 'text/html'});
-      res.write(data);
-      res.end();
-	});
-    break;
-*/
 	default:
 	fs.readFile("html"+parsedURL.pathname, function(err, data){
 	var mimetype="text/html";
