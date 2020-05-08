@@ -18,13 +18,25 @@ const server = http.createServer((req, res) => {
   
   switch(parsedURL.pathname){
     case "/":
-      res.statusCode = 200;
-      res.setHeader('Content-Type', 'text/plain');
       let queryParameters = querystring.parse(url.parse(req.url).query);
-      global.status = queryParameters['status'];
-      global.color = queryParameters['color'];
-      broadcastStatus();
-      res.end('{"result":"success","status":"'+status+'","color":"'+color+'"}');
+	  console.log("query: ", queryParameters['color'], queryParameters['status']);
+	  if(queryParameters['status'] == undefined && queryParameters['color'] == undefined){
+		fs.readFile("html/index.html", function(err, data){
+		  var mimetype="text/html";
+		  res.setHeader("Access-Control-Allow-Origin", "*");
+		  res.writeHead(200, {'Content-Type': mimetype});
+		  res.write(data);
+		  res.end();
+		});
+	  }
+	  else {
+		  res.statusCode = 200;
+		  res.setHeader('Content-Type', 'text/plain');
+		  global.status = queryParameters['status'];
+		  global.color = queryParameters['color'];
+		  broadcastStatus();
+		  res.end('{"result":"success","status":"'+status+'","color":"'+color+'"}');
+	}	
     break;
 	default:
 	fs.readFile("html"+parsedURL.pathname, function(err, data){
