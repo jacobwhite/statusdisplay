@@ -1,0 +1,23 @@
+<html>
+	<head>
+		<script type="text/javascript" src=display.js></script>
+		<link rel="stylesheet" type="text/css" href="stylesheet.css" />
+		<script
+			  src="https://code.jquery.com/jquery-1.12.4.min.js"
+			  integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ="
+			  crossorigin="anonymous">
+		</script>
+		<meta name="viewport" content="width=320, initial-scale=1, user-scalable=0">
+		<meta name="apple-mobile-web-app-capable" content="yes" />
+		<meta name="apple-touch-fullscreen" content="yes" />
+	</head>
+	<body>
+		<h2><span id=status></span></h2>
+		<iframe id='exercise' height=240 width=320 src=''></iframe>
+		<form action="#" onsubmit="handle(event)">
+			<input id="displayName" type="text" value="Unnamed Display"></input>
+		</form>
+		<button id="connectButton" onclick="connect()">Connect</button>
+		<span id="displaySpan" onclick="clickName()">Display: <span id="displayNameLabel"></span></span>
+	</body>
+</html>

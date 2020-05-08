@@ -1,0 +1,39 @@
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<link rel="stylesheet" type="text/css" href="stylesheet.css" />
+		<script
+			  src="https://code.jquery.com/jquery-1.12.4.min.js"
+			  integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ="
+			  crossorigin="anonymous">
+		</script>
+		<script src=update.js></script>
+		<meta name="viewport" content="width=320, initial-scale=1, user-scalable=0">
+		<meta name="apple-mobile-web-app-capable" content="yes" />
+		<meta name="apple-touch-fullscreen" content="yes" />
+	</head>
+	<body>
+		<h1>Set Status</h1>
+		<span id=currentStatus></span>
+		<form id="form" onsubmit='updateStatusFromForm(this)' action="#">
+		<input type=textbox id="status" placeholder="status"></input><br>
+		<!--
+		<input type=color id="color" oninput="throttle(clickColor,10);" value="#ffff00"></input>
+		-->
+			<button class=colorbutton id=redbutton onclick="setColor('red')"></button>
+			<button class=colorbutton id=greenbutton onclick="setColor('green')"></button>
+			<button class=colorbutton id=bluebutton onclick="setColor('blue')"></button>
+			<button class=colorbutton id=yellowbutton onclick="setColor('yellow')"></button>
+			<button class=colorbutton id=blackbutton onclick="setColor('black')"></button>
+			<button class=colorbutton id=whitebutton onclick="setColor('white')"></button>
+		</form>
+		<button id=oncallbutton onclick="updateStatus(this.innerHTML)">On Call</button>
+		<button id=freebutton onclick="updateStatus(this.innerHTML)">Free</button>
+		<button id=exercisingbutton onclick="updateStatus(this.innerHTML)">Exercising</button>
+		<button id=coffeebutton onclick="updateStatus(this.innerHTML)">Send Coffee</button><br>
+		<button id=offbutton onclick="updateStatus(this.innerHTML)">Off</button><br>
+		<br><hr>
+		<h3>Displays</h3>
+		<span id=log></span>
+	</body>
+</html>
