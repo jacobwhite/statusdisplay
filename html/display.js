@@ -1,4 +1,4 @@
-var url = 'ws://172.16.1.53:8080';
+var url = 'ws://'+location.hostname + ":8080";
 var connection = new WebSocket(url);
 
 var updateSound = new Audio("alarm02.mp3");

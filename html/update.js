@@ -1,4 +1,5 @@
-const url = 'ws://172.16.1.53:8080'
+var url = 'ws://'+location.hostname + ":8080";
+
 const connection = new WebSocket(url)
 
 connect();

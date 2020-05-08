@@ -3,9 +3,9 @@ global.status = "Free";
 global.color = "green";
 
 //HTTP Stuff
-
+var ip = require("ip");
+const hostname = ip.address();
 const http = require('http');
-const hostname = '172.16.1.53';
 const port = 8000;
 const url = require('url');
 const querystring = require('querystring');
