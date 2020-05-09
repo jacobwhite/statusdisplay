@@ -106,18 +106,23 @@ iframe{
   font-weight:900;
 }
  @media screen and (orientation:portrait) {
-    .displayDiv{
-        width: 80%;
-    }
-    input[type=submit]{
+    .displayDiv, button, input[type=submit]{
         width:80%;
     }
  }
  @media screen and (orientation:landscape) {
-    .displayDiv{
-        width: 25%;
+    .displayDiv, button, input[type=textbox], input[type=submit]{
+        width:18%;
     }
-    input[type=submit]{
-        width:25%;
+
+     input[type=textbox]{
+         min-width:400px;
+     }
+     .statusbutton{
+        min-width:210px;
+    }
+
+    input[type=textbox]{
+        width:34%;
     }
  }
