@@ -13,6 +13,12 @@ function connect(){
 			type: "getStatus"
 		};
 		connection.send(JSON.stringify(msg));
+		var registerMessage = {
+			type: "register",
+			displayType: "update",
+			name: localStorage.displayName,
+		}
+		connection.send(JSON.stringify(registerMessage));
 	}
 
 	connection.onerror = (error) => {
@@ -29,7 +35,8 @@ function connect(){
 		console.log(e.data)
 		var message = JSON.parse(e.data);
 		if(message.type == "status"){
-			document.getElementById("currentStatus").innerHTML = message.status;
+			document.getElementById("status").value = message.status;
+			document.body.style.backgroundColor = message.color;
 			var msg = {
 				type: "displayStatus",
 				name: localStorage.displayName,
