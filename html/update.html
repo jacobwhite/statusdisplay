@@ -13,7 +13,7 @@
 		<meta name="apple-touch-fullscreen" content="yes" />
 	</head>
 	<body>
-		<h1>Set Status</h1>
+		<h1>Status Console</h1>
 		<span id=currentStatus></span>
 		<form id="form" onsubmit='updateStatusFromForm(this)' action="#">
 		<input type=textbox id="status" placeholder="status"></input><br>
@@ -22,13 +22,12 @@
 			<button class=colorbutton id=bluebutton onclick="setColor('blue')"></button>
 			<button class=colorbutton id=yellowbutton onclick="setColor('yellow')"></button>
 			<button class=colorbutton id=blackbutton onclick="setColor('black')"></button>
-			<button class=colorbutton id=whitebutton onclick="setColor('white')"></button>
 		</form>
-		<button id=oncallbutton onclick="updateStatus(this.innerHTML)">On Call</button>
-		<button id=freebutton onclick="updateStatus(this.innerHTML)">Free</button>
-		<button id=exercisingbutton onclick="updateStatus(this.innerHTML)">Exercising</button>
-		<button id=coffeebutton onclick="updateStatus(this.innerHTML)">Send Coffee</button><br>
-		<button id=offbutton onclick="updateStatus(this.innerHTML)">Off</button><br>
+		<button class=statusbutton id=oncallbutton onclick="updateStatus(this.innerHTML)">On Call</button>
+		<button class=statusbutton id=freebutton onclick="updateStatus(this.innerHTML)">Free</button>
+		<button class=statusbutton id=exercisingbutton onclick="updateStatus(this.innerHTML)">Exercising</button>
+		<button class=statusbutton id=coffeebutton onclick="updateStatus(this.innerHTML)">Send Coffee</button>
+		<button class=statusbutton id=offbutton onclick="updateStatus(this.innerHTML)">Off</button><br>
 		<br><hr>
 		<h3>Displays</h3>
 		<span id=log></span>
