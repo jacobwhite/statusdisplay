@@ -1,6 +1,22 @@
-//Global Status
-global.status = "Free";
-global.color = "green";
+//Persistent Global Status
+const fs = require('fs');
+function loadStatus(){
+  let rawdata = fs.readFileSync('status.json');
+  let json = JSON.parse(rawdata);
+  global.status = json.status == undefined ? "" : json.status;
+  global.color = json.color == undefined ? "black" : json.color;
+  console.log("loaded status ", JSON.stringify(json));
+}
+
+function saveStatus(){
+  json = {
+    status: global.status,
+    color: global.color
+  }
+  fs.writeFileSync('status.json', JSON.stringify(json));
+}
+
+loadStatus();
 
 //HTTP Stuff
 var ip = require("ip");
@@ -9,7 +25,6 @@ const http = require('http');
 const port = 8000;
 const url = require('url');
 const querystring = require('querystring');
-const fs = require("fs");
 
 const server = http.createServer((req, res) => {
   let parsedURL = url.parse(req.url);
@@ -20,6 +35,7 @@ const server = http.createServer((req, res) => {
     if(queryParameters['status'] != undefined || queryParameters['color'] != undefined){
       global.status = queryParameters['status'];
       global.color = queryParameters['color'];
+	  saveStatus();
       broadcastStatus();
       res.statusCode = 200;
       res.setHeader('Content-Type', 'text/plain');
@@ -87,6 +103,7 @@ wss.on('connection', ws => {
       console.log(msg.type, "updated to", msg.status);
       global.status = msg.status;
       global.color = msg.color;
+      saveStatus();
 
       //respond to update
       var response = {
