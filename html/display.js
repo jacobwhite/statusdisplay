@@ -112,7 +112,9 @@ function connect(){
 			}
 			document.getElementById('status').innerHTML = message.status;
 			localStorage.status = message.status;
-			document.body.style.backgroundColor = message.color;
+			$(document.body).animate({
+				backgroundColor: message.color
+			});
 			localStorage.color=message.color;
 			if(message.status == "Exercising"){
 				$('body').css('marginTop', '20px');
