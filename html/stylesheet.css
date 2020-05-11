@@ -57,7 +57,7 @@ input[type=color]{
 #blackbutton{ background: black; }
 #whitebutton{ background: white; }
 button, input[type=submit], input[type=textbox], input[type=color]{
-  font-family: "Microstyle Extended ATT";  
+  font-family: "Microstyle Extended ATT";
   border-radius:25px;
   border: none;
   color: white;
