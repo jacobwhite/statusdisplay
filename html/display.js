@@ -110,7 +110,13 @@ function connect(){
 			else {
 				updateSound.play();
 			}
-			document.getElementById('status').innerHTML = message.status;
+			if(message.status == "Off"){
+				message.status = "";
+			}
+			$("#status").fadeOut(function() {
+			  $(this).text(message.status).fadeIn().fadeOut().fadeIn();
+			});
+
 			localStorage.status = message.status;
 			$(document.body).animate({
 				backgroundColor: message.color

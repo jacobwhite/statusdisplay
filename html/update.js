@@ -36,7 +36,9 @@ function connect(){
 		var message = JSON.parse(e.data);
 		if(message.type == "status"){
 			document.getElementById("status").value = message.status;
-			document.body.style.backgroundColor = message.color;
+			$(document.body).animate({
+				backgroundColor: message.color
+			});
 			var msg = {
 				type: "displayStatus",
 				name: localStorage.displayName,
