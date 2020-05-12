@@ -17,6 +17,7 @@ function connect(){
 			type: "register",
 			displayType: "update",
 			name: localStorage.displayName,
+			displayCode: localStorage.displayCode
 		}
 		connection.send(JSON.stringify(registerMessage));
 	}
@@ -32,6 +33,7 @@ function connect(){
 		}, 1000);
 	};
 	connection.onmessage = (e) => {
+		document.getElementById("displayCode").value = localStorage.displayCode;
 		console.log(e.data)
 		var message = JSON.parse(e.data);
 		if(message.type == "status"){
@@ -130,19 +132,28 @@ function updateStatus(status){
 			color="red";
 		}
 	}
+	localStorage.displayCode = document.getElementById("displayCode").value;
 
 	var msg = {
 		type: "status",
 		status: status,
 		name: localStorage.displayName,
 		date: Date.now(),
-		color: color
+		color: color,
+		displayCode:localStorage.displayCode
 	}
 	console.log("sending: ", msg.status, msg.color);
 	connection.send(JSON.stringify(msg));
 	//endSound.play();
 }
 
+function changedcode(){
+	if(connection!=undefined){
+		connection.close();
+		connect();
+		document.getElementById('log').innerHTML = "";
+	}
+}
 
 var key1 = new Audio("keyok1.mp3");
 var key2 = new Audio("keyok2.mp3");

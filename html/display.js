@@ -1,5 +1,5 @@
 var url = 'ws://'+location.hostname + ":8080";
-var connection = new WebSocket(url);
+var connection = undefined;// = new WebSocket(url);
 
 var updateSound = new Audio("alarm02.mp3");
 updateSound.volume = 0.9;
@@ -8,10 +8,40 @@ coffeeSound.volume = 0.05;
 
 window.addEventListener('resize', update);
 
+$(document).ready( function() {
+	if(localStorage.displayCode == undefined){
+		localStorage.displayCode = generateCode(3);
+	}
+	document.getElementById("displayCodeTextBox").value = localStorage.displayCode;
+});
+
 function clickName(){
-    console.log("clicked");
-    toggle($('#displaySpan'));
-    toggle($('#displayName'));
+	$("#displaySpan").hide();
+	$("#displayNameBoxSpan").show();
+}
+
+function clickCode(){
+	$("#displayCodeContainter").hide();
+	$("#displayCodeBoxSpan").show();
+}
+
+function changedname(){
+	if(connection!=undefined){
+		connection.close();
+		connect();
+		$("#displayNameBoxSpan").hide();
+		$("#displaySpan").show();
+	}
+}
+
+function changedcode(){
+	if(connection!=undefined){
+		connection.close();
+		connect();
+		$("#displayCodeBoxSpan").hide();
+		$("#displayCodeContainter").show();
+	}
+
 }
 
 var lastTime = 0;
@@ -32,7 +62,8 @@ function update(message){
 			status: localStorage.status,
 			color: localStorage.color,
 			width: Math.max(document.documentElement.clientWidth, window.innerWidth || 0),
-			height: Math.max(document.documentElement.clientHeight, window.innerHeight || 0)
+			height: Math.max(document.documentElement.clientHeight, window.innerHeight || 0),
+			displayCode: localStorage.displayCode
 		}
 		connection.send(JSON.stringify(response));
 		window.lastTime = now;
@@ -54,7 +85,8 @@ function handle(e){
     console.log(localStorage.displayName);
     toggle($('#displaySpan'));
     toggle($('#displayName'));
-    $('#displayNameLabel').text(localStorage.displayName);
+	$('#displayNameLabel').text(localStorage.displayName);
+
     var url="https://photar.net/ip/";
   //$.get(url).then(function(data){ $.get("https://photar.net/oncall/remove/?ip="+data+"&displayName="+oldDisplayName)});
 }
@@ -65,7 +97,8 @@ function register(){
 		var msg = {
 			type: "register",
 			name: localStorage.displayName,
-			date: Date.now()
+			date: Date.now(),
+			displayCode: localStorage.displayCode
 		}
 		connection.send(JSON.stringify(msg));
 		console.log("registered");
@@ -79,13 +112,16 @@ function register(){
 function connect(){
 	connection = new WebSocket(url);
 	$("#connectButton").hide();
+	$("#displayNameBoxSpan").hide();
+	$("#displayCodeBoxSpan").hide();
+	localStorage.displayName = $("#displayNameTextBox").val();
+	localStorage.displayCode = $("#displayCodeTextBox").val();
 	console.log("connecting...");
 
 	connection.onopen = function(e){
 		register();
 	}
 	
-
 	connection.onclose = function(e){
 		console.log("socket closed, reconnecting in 1 second. ", e.reason);
 		connection.onopen = null;
@@ -100,7 +136,8 @@ function connect(){
 	}
 	 
 	connection.onmessage = function(e) {
-    $('#displayNameLabel').text(localStorage.displayName);
+	$('#displayNameLabel').text(localStorage.displayName);
+	$('#displayCodeSpan').text(localStorage.displayCode);
 		console.log(e.data)
 		var message = JSON.parse(e.data);
 		if(message.type == 'status'){
@@ -113,6 +150,7 @@ function connect(){
 			if(message.status == "Off"){
 				message.status = "";
 			}
+			localStorage.displayCode = message.displayCode;
 			$("#status").fadeOut(function() {
 			  $(this).text(message.status).fadeIn().fadeOut().fadeIn();
 			});
@@ -141,4 +179,11 @@ function connect(){
 		}
 	}
 }
-//connect();
+function generateCode(length){
+	var result           = '';
+	 //var characters       = 'abcdefghjkmnpqrstuvwxyz23456789';
+	 var characters = ["Kurse", "Alpha", "Shades", "Hulk", "Winter Soldier", "Hawkeye", "Hellcow", "Ghost Rider", "Abomination", "Beta", "Dagger", "Agent 13", "The Punisher", "Scorch", "Absorbing Man", "Yellowjacket", "Whitney Frost", "Blackout", "White Power Dave", "Chico", "Black Mariah", "Drax the Destroyer", "Rooster", "Kingpin", "Honest Eddie", "Ego the Living Planet", "Viktor Ivchenko", "Kingpin", "Madame Gao", "Lash", "Deathlok", "The Superior", "Jimmy the Bear", "Cloak", "Mandarin", "Hank Thompson", "Korath the Pursuer", "Ant-Man", "Micro", "The Patriot", "The Tinkerer", "Quicksilver", "Scarlet Witch", "The Calvary", "Daredevil", "Agent 33", "Spider-Man", "Deathlok", "Ant-Man", "Star-Lord", "Nova Prime", "Ghost Rider", "War Machine", "Iron Patriot", "Yo-Yo", "Captain America", "Black Widow", "Ronan the Accuser", "Crossbones", "Red Skull", "Blacksmith", "Shocker", "The Executioner", "The Manderin", "Iron Monger", "Iron Man", "Cottonmouth", "Pistol Pete", "Doctor Strange", "Diamondback", "Black Panther", "Kilgrave", "The Collector", "Wasp", "Whiplash", "Patsy", "Falcon"];
+	 var result = characters[Math.floor(Math.random()*characters.length)];
+	 result += Math.floor(Math.random()*100);
+	 return result.toUpperCase();
+  }

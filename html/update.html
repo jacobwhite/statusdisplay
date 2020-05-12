@@ -1,7 +1,6 @@
 <html>
 	<head>
 		<meta charset="UTF-8">
-		<script src=update.js></script>
 		<link rel="stylesheet" type="text/css" href="stylesheet.css" />
 		<script
 			  src="https://code.jquery.com/jquery-1.12.4.min.js"
@@ -9,6 +8,7 @@
 			  crossorigin="anonymous">
 		</script>
 		<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js" integrity="sha256-VazP97ZCwtekAsvgPBSUwPFKdrwD3unUfSGVYrahUqU=" crossorigin="anonymous"></script>
+		<script src=update.js></script>
 		<meta name="viewport" content="width=320, initial-scale=1, user-scalable=0">
 		<meta name="apple-mobile-web-app-capable" content="yes" />
 		<meta name="apple-touch-fullscreen" content="yes" />
@@ -17,12 +17,15 @@
 		<h1>Status Console</h1>
 		<span id=currentStatus></span>
 		<form id="form" onsubmit='updateStatusFromForm(this)' action="#">
+		Status:<br>
 		<input type=textbox id="status" placeholder="status"></input><br>
-			<button class=colorbutton id=redbutton onclick="setColor('red')"></button>
-			<button class=colorbutton id=greenbutton onclick="setColor('green')"></button>
-			<button class=colorbutton id=bluebutton onclick="setColor('blue')"></button>
-			<button class=colorbutton id=yellowbutton onclick="setColor('yellow')"></button>
-			<button class=colorbutton id=blackbutton onclick="setColor('black')"></button>
+		Display Code:<br>
+		<input type=textbox id="displayCode" onchange="changedcode()" placeholder="displayCode"></input><br>
+		<button class=colorbutton id=greenbutton onclick="setColor('green')"></button>
+		<button class=colorbutton id=bluebutton onclick="setColor('blue')"></button>
+		<button class=colorbutton id=yellowbutton onclick="setColor('yellow')"></button>
+		<button class=colorbutton id=blackbutton onclick="setColor('black')"></button>
+		<button class=colorbutton id=redbutton onclick="setColor('red')"></button>
 		</form>
 		<button class=statusbutton id=oncallbutton onclick="updateStatus(this.innerHTML)">On Call</button>
 		<button class=statusbutton id=freebutton onclick="updateStatus(this.innerHTML)">Free</button>

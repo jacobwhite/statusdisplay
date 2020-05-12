@@ -51,7 +51,7 @@ const server = http.createServer((req, res) => {
 });
 
 function serveFile(res, file){
-  console.log("serving file:", file);
+  // console.log("serving file:", file);
   fs.readFile(file, function(err, data){
     var mimetype="text/html";
     let extension = file.substr(file.lastIndexOf('.') + 1);
@@ -101,21 +101,27 @@ wss.on('connection', ws => {
     //If message is a status update
     if(msg.type == "status"){
       console.log(msg.type, "updated to", msg.status);
-      global.status = msg.status;
-      global.color = msg.color;
-      saveStatus();
+      //global.status = msg.status;
+      //global.color = msg.color;
+      //saveStatus();
 
       //respond to update
       var response = {
         type: "response",
         value: "success",
-        status: global.status,
-        color: global.color
+        status: msg.status,
+        color: msg.color
       }
       ws.send(JSON.stringify(response));
     
       //Broadcast update to all displays
-      broadcastStatus();
+      var broadcastMessage = {
+        type: "status",
+        status: msg.status,
+        color: msg.color,
+        displayCode: msg.displayCode
+      }
+      broadcastStatus(broadcastMessage);
     }
 
     if(msg.type == "getStatus"){
@@ -126,34 +132,55 @@ wss.on('connection', ws => {
     }
 
     if(msg.type == "displayStatus"){
+      console.log("broadcasting displayStatus",msg.displayCode);
       wss.broadcast(JSON.stringify(msg));
     }
 
     if(msg.type == "register"){
+      if(msg.displayCode == undefined){
+        ws.displayCode = generateCode(6);
+      }
+      else {
+        ws.displayCode = msg.displayCode;
+      }
       var message = {
         type: "status",
         status: global.status,
-        color: global.color
+        color: global.color,
+        displayCode: ws.displayCode
       }
       console.log("responding to register: ", message);
       ws.send(JSON.stringify(message));
+      console.log("display code is:", ws.displayCode);
     }
   })
 })
 
 wss.broadcast = function(msg) {
-  console.log("broadcast: ", msg);
+  var json = JSON.parse(msg);
   wss.clients.forEach(function each(client){
-    console.log("    sending", msg);
-    client.send(msg);
+    if(client.displayCode == json.displayCode){
+      console.log("    sending", msg);
+      client.send(msg);
+    }
   });
 };
 
-function broadcastStatus(){
-  var broadcastMessage = {
-    type: "status",
-    status: global.status,
-    color: global.color
-  }
+function broadcastStatus(broadcastMessage){
+  // var broadcastMessage = {
+  //   type: "status",
+  //   status: global.status,
+  //   color: global.color,
+  // }
   wss.broadcast(JSON.stringify(broadcastMessage));
+}
+
+function generateCode(length){
+  var result           = '';
+   var characters       = 'abcdefghjkmnpqrstuvwxyz23456789';
+   var charactersLength = characters.length;
+   for ( var i = 0; i < length; i++ ) {
+      result += characters.charAt(Math.floor(Math.random() * charactersLength));
+   }
+   return result.toUpperCase();
 }

@@ -1,7 +1,6 @@
 <html>
 	<head>
 		<meta charset="UTF-8">
-		<script type="text/javascript" src=display.js></script>
 		<link rel="stylesheet" type="text/css" href="stylesheet.css" />
 		<script
 			  src="https://code.jquery.com/jquery-1.12.4.min.js"
@@ -9,6 +8,7 @@
 			  crossorigin="anonymous">
 		</script>
 		<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js" integrity="sha256-VazP97ZCwtekAsvgPBSUwPFKdrwD3unUfSGVYrahUqU=" crossorigin="anonymous"></script>
+		<script type="text/javascript" src=display.js></script>
 		<meta name="viewport" content="width=320, initial-scale=1, user-scalable=0">
 		<meta name="apple-mobile-web-app-capable" content="yes" />
 		<meta name="apple-touch-fullscreen" content="yes" />
@@ -20,7 +20,15 @@
 		<form action="#" onsubmit="handle(event)">
 			<input id="displayName" type="text" value="Unnamed Display"></input>
 		</form>
-		<button id="connectButton" onclick="connect()">Connect</button>
+		<span id=displayNameBoxSpan>Display Name:<br>
+			<input type="textbox" id="displayNameTextBox" onchange="changedname()" placeholder="display name"></input><br>
+		</span>
+		<span id=displayCodeBoxSpan>Display Code:<br>
+			<input type="textbox" id="displayCodeTextBox" onchange="changedcode()" placeholder="display code"></input><br>
+		</span>
+		<button id="connectButton" onclick="connect()">Connect</button><br>
+
 		<span id="displaySpan" onclick="clickName()">Display: <span id="displayNameLabel"></span></span>
+		<span id="displayCodeContainter" onclick="clickCode()">DisplayCode: <span id="displayCodeSpan"></span></span>
 	</body>
 </html>
