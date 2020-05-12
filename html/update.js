@@ -37,7 +37,7 @@ function connect(){
 		console.log(e.data)
 		var message = JSON.parse(e.data);
 		if(message.type == "status"){
-			document.getElementById("status").value = message.status;
+			document.getElementById("statusTextBox").value = message.status;
 			$(document.body).animate({
 				backgroundColor: message.color
 			});
@@ -81,7 +81,7 @@ function connect(){
 
 
 function updateStatusFromForm(form){
-	updateStatus(document.getElementById("status").value);
+	updateStatus(document.getElementById("statusTextBox").value);
 }
 
 var lastTime = 0;
@@ -96,7 +96,7 @@ function throttle(func, timeFrame) {
 function clickColor() {
 	var color;
 	color = $("#color").val();
-	updateStatus(document.getElementById("status").value);
+	updateStatus(document.getElementById("statusTextBox").value);
 }
 
 function setColor(color){
