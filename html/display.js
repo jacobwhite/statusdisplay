@@ -151,10 +151,7 @@ function connect(){
 				message.status = "";
 			}
 			localStorage.displayCode = message.displayCode;
-			$("#status").fadeOut(function() {
-			  $(this).text(message.status).fadeIn().fadeOut().fadeIn();
-			});
-
+			 $("#status").text(message.status)
 			localStorage.status = message.status;
 			$(document.body).animate({
 				backgroundColor: message.color
