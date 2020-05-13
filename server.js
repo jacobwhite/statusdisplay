@@ -32,11 +32,14 @@ const server = http.createServer((req, res) => {
   if(parsedURL.pathname == "/"){
     let queryParameters = querystring.parse(url.parse(req.url).query);
     
-    if(queryParameters['status'] != undefined || queryParameters['color'] != undefined){
-      global.status = queryParameters['status'];
-      global.color = queryParameters['color'];
-	  saveStatus();
-      broadcastStatus();
+    if((queryParameters['status'] != undefined || queryParameters['color'] != undefined) && queryParameters['displayCode'] != undefined){
+      var broadcastMessage = {
+        type: "status",
+        status: queryParameters['status'],
+        color: queryParameters['color'],
+        displayCode: queryParameters['displayCode']
+      }
+      broadcastStatus(broadcastMessage);
       res.statusCode = 200;
       res.setHeader('Content-Type', 'text/plain');
       res.end('{"result":"success","status":"'+status+'","color":"'+color+'"}');
