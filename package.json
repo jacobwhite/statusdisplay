@@ -6,6 +6,7 @@
   "dependencies": {
     "fs": "0.0.1-security",
     "ip": "^1.1.5",
+    "rate-limiter-flexible": "^2.1.4",
     "ws": "^7.3.0"
   }
 }

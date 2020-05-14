@@ -19,6 +19,12 @@ function saveStatus(){
 loadStatus();
 
 //HTTP Stuff
+const rlf = require("rate-limiter-flexible");
+const opts = {
+  points:10,
+  duration:60,
+};
+const rateLimiter = new rlf.RateLimiterMemory(opts);
 var ip = require("ip");
 const hostname = ip.address();
 const http = require('http');
@@ -33,6 +39,8 @@ const server = http.createServer((req, res) => {
     let queryParameters = querystring.parse(url.parse(req.url).query);
     
     if((queryParameters['status'] != undefined || queryParameters['color'] != undefined) && queryParameters['displayCode'] != undefined){
+      rateLimiter.consume(queryParameters['displayCode'], 1)
+	    .then((rateLimiterRes) => {
       var broadcastMessage = {
         type: "status",
         status: queryParameters['status'],
@@ -43,6 +51,8 @@ const server = http.createServer((req, res) => {
       res.statusCode = 200;
       res.setHeader('Content-Type', 'text/plain');
       res.end('{"result":"success","status":"'+status+'","color":"'+color+'"}');
+	})
+	.catch((rateLimiterRes) =>{});
     }
     else {
       serveFile(res,"html/index.html");
