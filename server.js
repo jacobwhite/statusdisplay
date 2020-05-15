@@ -1,4 +1,6 @@
-//Persistent Global Status
+//Persistent Global Statuses
+var statuses = new Object();
+
 const fs = require('fs');
 function loadStatus(){
   let rawdata = fs.readFileSync('status.json');
@@ -118,6 +120,9 @@ wss.on('connection', ws => {
       //global.color = msg.color;
       //saveStatus();
 
+	//save status to memory
+	global.statuses[msg.displayCode] = {status: msg.status, color: msg.color};
+
       //respond to update
       var response = {
         type: "response",
@@ -156,10 +161,17 @@ wss.on('connection', ws => {
       else {
         ws.displayCode = msg.displayCode;
       }
+	  if(global.statuses == undefined){
+		global.statuses = new Object();
+	  }
+	  if(global.statuses[msg.displayCode] == undefined){
+		global.statuses[msg.displayCode] = new Object();
+	  }
+
       var message = {
         type: "status",
-        status: global.status,
-        color: global.color,
+        status: global.statuses[msg.displayCode].status,
+        color: global.statuses[msg.displayCode].color,
         displayCode: ws.displayCode
       }
       console.log("responding to register: ", message);

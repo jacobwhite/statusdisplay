@@ -9,6 +9,7 @@ coffeeSound.volume = 0.05;
 window.addEventListener('resize', update);
 
 $(document).ready( function() {
+	$('#statush2').hide();
 	if(localStorage.displayCode == undefined){
 		localStorage.displayCode = generateCode(3);
 	}
@@ -136,6 +137,8 @@ function connect(){
 	}
 	 
 	connection.onmessage = function(e) {
+	$('#statush2').show();
+	
 	$('#displayNameLabel').text(localStorage.displayName);
 	$('#displayCodeSpan').text(localStorage.displayCode);
 		console.log(e.data)
@@ -167,7 +170,7 @@ function connect(){
 			else {
 				document.getElementById('exercise').setAttribute('src', "");
 				$('#exercise').hide();
-				$('body').css('marginTop', '200px');
+				//$('body').css('marginTop', '200px');
 			}
 			update(message);
 		}
