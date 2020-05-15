@@ -60,7 +60,7 @@ wss.on('connection', ws => {
         color: msg.color,
         displayCode: msg.displayCode
       }
-      commonFunctions.broadcastStatus(broadcastMessage);
+      commonFunctions.broadcastStatus(wss, broadcastMessage);
     }
 
     if(msg.type == "getStatus"){

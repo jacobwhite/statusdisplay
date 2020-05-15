@@ -5,7 +5,7 @@ var statuses = new Object();
 
 module.exports = function () {
 
-    this.broadcastStatus = (broadcastMessage) => {
+    this.broadcastStatus = (wss, broadcastMessage) => {
         // var broadcastMessage = {
         //   type: "status",
         //   status: global.status,
