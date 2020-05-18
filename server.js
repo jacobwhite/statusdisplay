@@ -14,7 +14,7 @@ commonFunctions.loadStatus();
 var ip = require("ip");
 const hostname = ip.address();
 // const http = require('http');
-const port = 8000;
+const port = 80;
 // const url = require('url');
 // const querystring = require('querystring');
 
@@ -28,6 +28,8 @@ server.listen(port, hostname, () => {
 //Web Socket Stuff
 const WebSocket = require('ws')
 const wss = new WebSocket.Server({ port: 8080 })
+commonFunctions.wss = wss;
+
 console.log("Websocket Ready"); 
 wss.on('connection', ws => {
   ws.on('message', message => {

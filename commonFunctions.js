@@ -4,6 +4,7 @@ const fs = require('fs');
 var statuses = new Object();
 
 module.exports = function () {
+    this.wss = undefined;
 
     this.broadcastStatus = (wss, broadcastMessage) => {
         // var broadcastMessage = {
@@ -97,19 +98,28 @@ module.exports = function () {
             if (parsedURL.pathname == "/") {
                 let queryParameters = querystring.parse(url.parse(req.url).query);
 
-                if ((queryParameters['status'] != undefined || queryParameters['color'] != undefined) && queryParameters['displayCode'] != undefined) {
+                if (queryParameters['serverConnections'] != undefined || (queryParameters['status'] != undefined || queryParameters['color'] != undefined) && queryParameters['displayCode'] != undefined) {
+                    
                     rateLimiter.consume(queryParameters['displayCode'], 1)
                         .then((rateLimiterRes) => {
-                            var broadcastMessage = {
-                                type: "status",
-                                status: queryParameters['status'],
-                                color: queryParameters['color'],
-                                displayCode: queryParameters['displayCode']
+                            if (queryParameters['serverConnections'] != undefined && this.wss != undefined) {
+                                console.log(this.wss._server.connections);
+                                res.statuCode = 200;
+                                res.setHeader('Content-Type', 'text/plain');
+                                res.end('{"connections": "' + this.wss._server.connections +'"}');
                             }
-                            broadcastStatus(broadcastMessage);
-                            res.statusCode = 200;
-                            res.setHeader('Content-Type', 'text/plain');
-                            res.end('{"result":"success","status":"' + status + '","color":"' + color + '"}');
+                            else {
+                                var broadcastMessage = {
+                                    type: "status",
+                                    status: queryParameters['status'],
+                                    color: queryParameters['color'],
+                                    displayCode: queryParameters['displayCode']
+                                }
+                                broadcastStatus(broadcastMessage);
+                                res.statusCode = 200;
+                                res.setHeader('Content-Type', 'text/plain');
+                                res.end('{"result":"success","status":"' + status + '","color":"' + color + '"}');
+                            }
                         })
                         .catch((rateLimiterRes) => { });
                 }
