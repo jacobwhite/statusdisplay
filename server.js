@@ -5,22 +5,16 @@ const commonMethodsFile = require("./commonFunctions")
 
 const commonFunctions = new commonMethodsFile()
 
-// const fs = require('fs');
-
 commonFunctions.loadStatus();
 
-//HTTP Stuff
+//Bump this number to force clients to reload
+const serverVersion = 0.015;
 
+//HTTP Stuff
 var ip = require("ip");
 const hostname = ip.address();
-// const http = require('http');
 const port = 80;
-// const url = require('url');
-// const querystring = require('querystring');
-
 const server = commonFunctions.getHttpServer()
-
-
 server.listen(port, hostname, () => {
   console.log(`HTTP Server running at http://${hostname}:${port}/`);
 });
@@ -39,18 +33,17 @@ wss.on('connection', ws => {
     //If message is a status update
     if(msg.type == "status"){
       console.log(msg.type, "updated to", msg.status);
-      //global.status = msg.status;
-      //global.color = msg.color;
       //saveStatus();
 
-	//save status to memory
-	global.statuses[msg.displayCode] = {status: msg.status, color: msg.color};
+      //save status to memory
+      global.statuses[msg.displayCode] = {status: msg.status, color: msg.color};
 
       //respond to update
       var response = {
         type: "response",
         value: "success",
         status: msg.status,
+        serverVersion: global.serverVersion,
         color: msg.color
       }
       ws.send(JSON.stringify(response));
@@ -60,6 +53,7 @@ wss.on('connection', ws => {
         type: "status",
         status: msg.status,
         color: msg.color,
+        serverVersion: serverVersion,
         displayCode: msg.displayCode
       }
       commonFunctions.broadcastStatus(wss, broadcastMessage);
@@ -67,13 +61,15 @@ wss.on('connection', ws => {
 
     if(msg.type == "getStatus"){
       var broadcastMessage = {
-        type: "getStatus"
+        type: "getStatus",
+        serverVersion: global.serverVersion
       }
       wss.broadcast(JSON.stringify(broadcastMessage));
     }
 
     if(msg.type == "displayStatus"){
-      console.log("broadcasting displayStatus",msg.displayCode);
+      msg.serverVersion = serverVersion;
+      console.log("broadcasting displayStatus",msg.displayCode, msg.serverVersion);
       wss.broadcast(JSON.stringify(msg));
     }
 
@@ -84,17 +80,18 @@ wss.on('connection', ws => {
       else {
         ws.displayCode = msg.displayCode;
       }
-	  if(global.statuses == undefined){
-		global.statuses = new Object();
-	  }
-	  if(global.statuses[msg.displayCode] == undefined){
-		global.statuses[msg.displayCode] = new Object();
-	  }
+      if(global.statuses == undefined){
+        global.statuses = new Object();
+      }
+      if(global.statuses[msg.displayCode] == undefined){
+        global.statuses[msg.displayCode] = new Object();
+      }
 
       var message = {
         type: "status",
         status: global.statuses[msg.displayCode].status,
         color: global.statuses[msg.displayCode].color,
+        serverVersion: global.serverVersion,
         displayCode: ws.displayCode
       }
       console.log("responding to register: ", message);
@@ -113,4 +110,3 @@ wss.broadcast = function(msg) {
     }
   });
 };
-

@@ -37,7 +37,14 @@ function connect(){
 		console.log(e.data)
 		var message = JSON.parse(e.data);
 		if(message.type == "status"){
+			if(message.status == undefined || status.message == "undefined"){
+				message.status = localStorage.status;
+			}
 			document.getElementById("statusTextBox").value = message.status;
+
+			if(message.color == undefined || status.color == "undefined"){
+				message.color = localStorage.color;
+			}
 			$(document.body).animate({
 				backgroundColor: message.color
 			});

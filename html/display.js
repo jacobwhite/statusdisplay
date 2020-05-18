@@ -14,6 +14,13 @@ $(document).ready( function() {
 		localStorage.displayCode = generateCode(3);
 	}
 	document.getElementById("displayCodeTextBox").value = localStorage.displayCode;
+	document.getElementById("displayNameTextBox").value = localStorage.displayName;
+	if(localStorage.displayName != undefined &&
+	   localStorage.displayName != "undefined" &&
+	   localStorage.displayCode != undefined &&
+	   localStorage.displayCode != "undefined"){
+		   connect();
+	   }
 });
 
 function clickName(){
@@ -137,13 +144,25 @@ function connect(){
 	}
 	 
 	connection.onmessage = function(e) {
-	$('#statush2').show();
-	
-	$('#displayNameLabel').text(localStorage.displayName);
-	$('#displayCodeSpan').text(localStorage.displayCode);
-		console.log(e.data)
-		var message = JSON.parse(e.data);
-		if(message.type == 'status'){
+	  $('#statush2').show();	
+	  $('#displayNameLabel').text(localStorage.displayName);
+	  $('#displayCodeSpan').text(localStorage.displayCode);
+	  console.log(e.data)
+	  var message = JSON.parse(e.data);
+
+	  if(localStorage.serverVersion == undefined || localStorage.serverVersion == "undefined"){
+		  if(message.serverVersion != undefined && message.serverVersion != "undefined"){
+			  localStorage.serverVersion = message.serverVersion;
+		  }
+	  }
+	  else if(localStorage.serverVersion != message.serverVersion){
+		if(message.serverVersion != undefined && message.serverVersion != "undefined"){
+			localStorage.serverVersion = message.serverVersion;
+			location.reload();
+		}
+	  }
+
+	  if(message.type == 'status'){
 			if(message.status == "Send Coffee" || message.color == "red"){
 				coffeeSound.play();
 			}	
@@ -154,12 +173,25 @@ function connect(){
 				message.status = "";
 			}
 			localStorage.displayCode = message.displayCode;
-			 $("#status").text(message.status)
-			localStorage.status = message.status;
+
+			if(message.status != undefined && message.status != "undefined"){
+			  localStorage.status = message.status;
+			}
+			else {
+			  message.status = localStorage.status;
+			}
+			$("#status").text(message.status)
+			
+			if(message.color != undefined && message.color != "undefined"){
+				localStorage.color = message.color;
+			}
+			else {
+				message.color = localStorage.color;
+			}
 			$(document.body).animate({
 				backgroundColor: message.color
 			});
-			localStorage.color=message.color;
+
 			if(message.status == "Exercising"){
 				$('body').css('marginTop', '20px');
 				$('#exercise').show();
