@@ -82,7 +82,7 @@ module.exports = function () {
 
         const rlf = require("rate-limiter-flexible");
         const opts = {
-        points:10,
+        points:60,
         duration:60,
         };
 
@@ -100,8 +100,8 @@ module.exports = function () {
 
                 if (queryParameters['serverConnections'] != undefined || (queryParameters['status'] != undefined || queryParameters['color'] != undefined) && queryParameters['displayCode'] != undefined) {
                     
-                    rateLimiter.consume(queryParameters['displayCode'], 1)
-                        .then((rateLimiterRes) => {
+                    // rateLimiter.consume(queryParameters['displayCode'], 1)
+                    //     .then((rateLimiterRes) => {
                             if (queryParameters['serverConnections'] != undefined && this.wss != undefined) {
                                 console.log(this.wss._server.connections);
                                 res.statuCode = 200;
@@ -115,13 +115,13 @@ module.exports = function () {
                                     color: queryParameters['color'],
                                     displayCode: queryParameters['displayCode']
                                 }
-                                broadcastStatus(broadcastMessage);
+                                this.broadcastStatus(this.wss, broadcastMessage);
                                 res.statusCode = 200;
                                 res.setHeader('Content-Type', 'text/plain');
-                                res.end('{"result":"success","status":"' + status + '","color":"' + color + '"}');
+                                res.end('{"result":"success","status":"' + queryParameters['status'] + '","color":"' + queryParameters['color'] + '"}');
                             }
-                        })
-                        .catch((rateLimiterRes) => { });
+                        // })
+                        // .catch((rateLimiterRes) => { });
                 }
                 else {
                     this.serveFile(res, "html/index.html");
