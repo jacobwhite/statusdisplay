@@ -31,12 +31,14 @@ wss.on('connection', ws => {
     var msg = JSON.parse(message);
   
     //If message is a status update
+    console.log("message type:",msg.type);
     if(msg.type == "status"){
       console.log(msg.type, "updated to", msg.status);
       //saveStatus();
 
       //save status to memory
       global.statuses[msg.displayCode] = {status: msg.status, color: msg.color};
+      console.log("status saved:", global.statuses[msg.displayCode]);
 
       //respond to update
       var response = {

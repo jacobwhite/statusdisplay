@@ -98,7 +98,7 @@ module.exports = function () {
             if (parsedURL.pathname == "/") {
                 let queryParameters = querystring.parse(url.parse(req.url).query);
 
-                if (queryParameters['serverConnections'] != undefined || (queryParameters['status'] != undefined || queryParameters['color'] != undefined) && queryParameters['displayCode'] != undefined) {
+                if (queryParameters['serverConnections'] != undefined || (queryParameters['status'] != undefined || queryParameters['color'] != undefined) && queryParameters['displayCode'] != undefined || queryParameters['statuses'] != undefined) {
                     
                     // rateLimiter.consume(queryParameters['displayCode'], 1)
                     //     .then((rateLimiterRes) => {
@@ -108,6 +108,12 @@ module.exports = function () {
                                 res.setHeader('Content-Type', 'text/plain');
                                 res.end('{"connections": "' + this.wss._server.connections +'"}');
                             }
+			    else if(queryParameters['statuses'] != undefined) {
+                                console.log("statuses:", global.statuses);
+                                res.statuCode = 200;
+                                res.setHeader('Content-Type', 'application/json');
+                                res.end(JSON.stringify(global.statuses));
+														}
                             else {
                                 var broadcastMessage = {
                                     type: "status",
@@ -115,6 +121,12 @@ module.exports = function () {
                                     color: queryParameters['color'],
                                     displayCode: queryParameters['displayCode']
                                 }
+				let s = {
+					status: broadcastMessage.status,
+					color: broadcastMessage.color
+				}
+				global.statuses[queryParameters['displayCode']] = s;
+				
                                 this.broadcastStatus(this.wss, broadcastMessage);
                                 res.statusCode = 200;
                                 res.setHeader('Content-Type', 'text/plain');
