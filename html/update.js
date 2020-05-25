@@ -45,6 +45,13 @@ function connect(){
 			if(message.color == undefined || status.color == "undefined"){
 				message.color = localStorage.color;
 			}
+			if(message.color == 'brown'){
+				message.color = '#a80';
+			}
+			if(message.color == 'orange'){
+				message.color = '#ffa500';
+			}
+
 			$(document.body).animate({
 				backgroundColor: message.color
 			});

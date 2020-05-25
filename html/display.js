@@ -232,18 +232,18 @@ function connect(){
 				backgroundColor: message.color
 			});
 
-			if(message.status == "Exercising"){
-				$('body').css('marginTop', '20px');
-				$('#exercise').show();
-				if(document.getElementById('exercise').getAttribute('src') == ""){
-					document.getElementById('exercise').setAttribute('src', "https://photar.net/truepoints/embedded/");
-				}
-			}
-			else {
-				document.getElementById('exercise').setAttribute('src', "");
-				$('#exercise').hide();
-				//$('body').css('marginTop', '200px');
-			}
+			// if(message.status == "Exercising"){
+			// 	$('body').css('marginTop', '20px');
+			// 	$('#exercise').show();
+			// 	if(document.getElementById('exercise').getAttribute('src') == ""){
+			// 		document.getElementById('exercise').setAttribute('src', "https://photar.net/truepoints/embedded/");
+			// 	}
+			// }
+			// else {
+			// 	document.getElementById('exercise').setAttribute('src', "");
+			// 	$('#exercise').hide();
+			// 	//$('body').css('marginTop', '200px');
+			// }
 			update(message);
 		}
 		else if(message.type == "getStatus"){
