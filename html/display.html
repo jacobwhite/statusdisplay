@@ -1,6 +1,5 @@
 <html>
 	<head>
-		<script src="http://172.16.1.250:1337/vorlon.js"></script>
 		<meta charset="UTF-8">
 		<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/kognise/water.css@latest/dist/dark.min.css">
 		<link rel="stylesheet" type="text/css" href="stylesheet.css" />
@@ -9,14 +8,14 @@
 			  integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ="
 			  crossorigin="anonymous">
 		</script>
-		<script type="text/javascript" src=display.js></script>
 		<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js" integrity="sha256-VazP97ZCwtekAsvgPBSUwPFKdrwD3unUfSGVYrahUqU=" crossorigin="anonymous"></script>
+		<script type="text/javascript" src=display.js></script>
 		<meta name="viewport" content="width=320, initial-scale=1, user-scalable=0">
 		<meta name="apple-mobile-web-app-capable" content="yes" />
 		<meta name="apple-touch-fullscreen" content="yes" />
 		<meta charset="UTF-8">
 	</head>
-	<body><center>
+	<body>
 		<h2 id=statush2><span id=status></span></h2>
 		<!-- <iframe id='exercise' height=240 width=320 src=''></iframe> -->
 		<form action="#" onsubmit="handle(event)">
@@ -29,8 +28,7 @@
 			<input type="textbox" id="displayCodeTextBox" onchange="changedcode()" placeholder="display code"></input><br>
 		</span>
 		<button id="connectButton" onclick="connect()">Connect</button><br>
-		</center>
-		<!-- Bottom labels -->
+
 		<span id="displaySpan" onclick="clickName()">Display: <span id="displayNameLabel"></span></span>
 		<span id="displayCodeContainter" onclick="clickCode()">Code: <span id="displayCodeSpan"></span></span>
 	</body>

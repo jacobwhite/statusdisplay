@@ -13,7 +13,7 @@ const serverVersion = 0.015;
 //HTTP Stuff
 var ip = require("ip");
 const hostname = ip.address();
-const port = 80;
+const port = 8000;
 const server = commonFunctions.getHttpServer()
 server.listen(port, hostname, () => {
   console.log(`HTTP Server running at http://${hostname}:${port}/`);

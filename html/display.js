@@ -1,4 +1,3 @@
-alert("hi");
 var url = 'ws://'+location.hostname + ":8080";
 var connection = undefined;// = new WebSocket(url);
 
@@ -32,36 +31,9 @@ $(document).ready( function() {
 	   }
 });
 function suggestDisplayName(){
-	// Opera 8.0+
-	var isOpera = (!!window.opr && !!opr.addons) || !!window.opera || navigator.userAgent.indexOf(' OPR/') >= 0;
-
-	// Firefox 1.0+
-	var isFirefox = typeof InstallTrigger !== 'undefined';
-
-	// Safari 3.0+ "[object HTMLElementConstructor]"
-	var isSafari = /constructor/i.test(window.HTMLElement) || (function (p) { return p.toString() === "[object SafariRemoteNotification]"; })(!window['safari'] || (typeof safari !== 'undefined' && safari.pushNotification));
-
-	// Internet Explorer 6-11
-	var isIE = /*@cc_on!@*/false || !!document.documentMode;
-
-	// Edge 20+
-	var isEdge = !isIE && !!window.StyleMedia;
-
-	// Chrome 1 - 71
-	var isChrome = !!window.chrome && (!!window.chrome.webstore || !!window.chrome.runtime);
-
-	// Blink engine detection
-	var isBlink = (isChrome || isOpera) && !!window.CSS;
-
-	let browser = "";
-	if(isFirefox) browser = "Firefox";
-	if(isChrome) browser = "Chrome";
-	if(isSafari) browser = "Safari";
-	if(isOpera) browser = "Opera";
-	if(isIE) browser = "IE";
-	if(isEdge) browser = "Edge";
-	if(isBlink) browser = "Blink";
-	return browser + "-Display";
+	var characters = ["Kurse","Alpha","Shades","Hulk","Winter-Soldier","Hawkeye","Hellcow","Ghost-Rider","Abomination","Beta","Dagger","Agent-13","The-Punisher","Scorch","Absorbing-Man","Yellowjacket","Whitney-Frost","Blackout","White-Power-Dave","Chico","Black-Mariah","Drax-the-Destroyer","Rooster","Kingpin","Honest-Eddie","Ego-the-Living-Planet","Viktor-Ivchenko","Kingpin","Madame-Gao","Lash","Deathlok","The-Superior","Jimmy-the-Bear","Cloak","Mandarin","Hank-Thompson","Korath-the-Pursuer","Ant-Man","Micro","The-Patriot","The-Tinkerer","Quicksilver","Scarlet-Witch","The-Calvary","Daredevil","Agent-33","Spider-Man","Deathlok","Ant-Man","Star-Lord","Nova-Prime","Ghost-Rider","War-Machine","Iron-Patriot","Yo-Yo","Captain-America","Black-Widow","Ronan-the-Accuser","Crossbones","Red-Skull","Blacksmith","Shocker","The-Executioner","The-Manderin","Iron-Monger","Iron-Man","Cottonmouth","Pistol-Pete","Doctor-Strange","Diamondback","Black-Panther","Kilgrave","The-Collector","Wasp","Whiplash","Patsy","Falcon"];
+	var result = characters[Math.floor(Math.random()*characters.length)];
+	return result + "-Display".toUpperCase();
 }
 
 function clickName(){
