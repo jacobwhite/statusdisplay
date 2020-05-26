@@ -1,3 +1,4 @@
+alert("hi");
 var url = 'ws://'+location.hostname + ":8080";
 var connection = undefined;// = new WebSocket(url);
 
@@ -162,6 +163,7 @@ function connect(){
 	$("#connectButton").hide();
 	$("#displayNameBoxSpan").hide();
 	$("#displayCodeBoxSpan").hide();
+	$("#statushd").show();
 	localStorage.displayName = $("#displayNameTextBox").val();
 	localStorage.displayCode = $("#displayCodeTextBox").val();
 	console.log("connecting...");
