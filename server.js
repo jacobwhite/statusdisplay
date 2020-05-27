@@ -8,12 +8,12 @@ const commonFunctions = new commonMethodsFile()
 commonFunctions.loadStatus();
 
 //Bump this number to force clients to reload
-const serverVersion = 0.015;
+const serverVersion = 0.016;
 
 //HTTP Stuff
 var ip = require("ip");
 const hostname = ip.address();
-const port = 8000;
+const port = 80;
 const server = commonFunctions.getHttpServer()
 server.listen(port, hostname, () => {
   console.log(`HTTP Server running at http://${hostname}:${port}/`);

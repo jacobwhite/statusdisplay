@@ -124,11 +124,6 @@ function register(){
 		connection.send(JSON.stringify(msg));
 		console.log("registered");
 
-		setTimeout(function heartbeat() {
-			console.log("heartbeat");
-			update();
-			setTimeout(heartbeat, 60000)
-		}, 60000);
 	}
 	else {
 		console.log("websoket open but not ready?");
