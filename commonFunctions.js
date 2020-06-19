@@ -1,4 +1,4 @@
-
+const WebSocket = require('ws');
 const fs = require('fs');
 //Persistent Global Statuses
 var statuses = new Object();
@@ -7,13 +7,14 @@ module.exports = function () {
     this.wss = undefined;
 
     this.broadcastStatus = (wss, broadcastMessage) => {
-        // var broadcastMessage = {
-        //   type: "status",
-        //   status: global.status,
-        //   color: global.color,
-        // }
         wss.broadcast(JSON.stringify(broadcastMessage));
-    }
+		}
+	  this.updateStatus = (message) => {
+			var connection = new WebSocket("ws://statusdisplay.jacobwhite.us:8080")
+			connection.onopen = (error) => {
+				connection.send(JSON.stringify(message));
+			}
+		}
 
     this.generateCode = (length) => {
         var result = '';
@@ -119,7 +120,8 @@ module.exports = function () {
                                     type: "status",
                                     status: queryParameters['status'],
                                     color: queryParameters['color'],
-                                    displayCode: queryParameters['displayCode']
+                                    displayCode: queryParameters['displayCode'],
+																	  chat_id: queryParameters['chat_id']
                                 }
 				let s = {
 					status: broadcastMessage.status,
@@ -128,6 +130,7 @@ module.exports = function () {
 				global.statuses[queryParameters['displayCode']] = s;
 				
                                 this.broadcastStatus(this.wss, broadcastMessage);
+                                this.updateStatus(broadcastMessage);
                                 res.statusCode = 200;
                                 res.setHeader('Content-Type', 'text/plain');
                                 res.end('{"result":"success","status":"' + queryParameters['status'] + '","color":"' + queryParameters['color'] + '"}');

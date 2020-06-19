@@ -1,5 +1,7 @@
+// Secrets
+const keys = require('./keys');
 // //Persistent Global Statuses
-// var statuses = new Object();
+const request = require('request');
 
 const commonMethodsFile = require("./commonFunctions")
 
@@ -59,6 +61,12 @@ wss.on('connection', ws => {
         displayCode: msg.displayCode
       }
       commonFunctions.broadcastStatus(wss, broadcastMessage);
+      //Notify Telegram Channel if theres a channel_id
+			console.log("CHAT_ID:", msg.chat_id);
+      //if(msg.chat_id != undefined){
+        //send message
+	sendTelegramNotification("-1337", msg.status)
+      //}
     }
 
     if(msg.type == "getStatus"){
@@ -112,3 +120,20 @@ wss.broadcast = function(msg) {
     }
   });
 };
+
+function sendTelegramNotification(chat_id, message){
+  telegramAPIKey = keys.bot_api_key;
+  chat_id = keys.chat_id;
+  console.log(telegramAPIKey);
+  console.log(chat_id);
+  
+	var telegramURL = "https://api.telegram.org/bot"+telegramAPIKey+"/sendMessage"
+	var params = 'chat_id=' + chat_id + '&text=' + message
+	request.post({
+		headers: {'content-type' : 'application/x-www-form-urlencoded'},
+		url:     telegramURL,
+		body:    params
+	}, function(error, response, body){
+		console.log(body);
+	});
+}
