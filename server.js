@@ -65,7 +65,7 @@ wss.on('connection', ws => {
 			console.log("CHAT_ID:", msg.chat_id);
       //if(msg.chat_id != undefined){
         //send message
-	sendTelegramNotification("-1337", msg.status)
+	sendTelegramNotification("-1337", msg.status, msg.color)
       //}
     }
 
@@ -121,14 +121,14 @@ wss.broadcast = function(msg) {
   });
 };
 
-function sendTelegramNotification(chat_id, message){
+function sendTelegramNotification(chat_id, message, color){
   telegramAPIKey = keys.bot_api_key;
   chat_id = keys.chat_id;
   console.log(telegramAPIKey);
   console.log(chat_id);
   
 	var telegramURL = "https://api.telegram.org/bot"+telegramAPIKey+"/sendMessage"
-	var params = 'chat_id=' + chat_id + '&text=' + message
+	var params = 'chat_id=' + chat_id + '&text=' + message + " " + color
 	request.post({
 		headers: {'content-type' : 'application/x-www-form-urlencoded'},
 		url:     telegramURL,
