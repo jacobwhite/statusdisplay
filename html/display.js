@@ -104,7 +104,7 @@ function handlePing(){
 
 function isAlive(){
 	var now = new Date();
-	if(now - lastPing >= 10){//10 seconds
+	if(now - lastPing >= 15000){//10 seconds
 		console.log("ping timed out", now - lastPing);
 		location.reload();
 	}
