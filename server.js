@@ -127,13 +127,19 @@ function sendTelegramNotification(chat_id, message, color){
   console.log(telegramAPIKey);
   console.log(chat_id);
   
-	var telegramURL = "https://api.telegram.org/bot"+telegramAPIKey+"/sendMessage"
-	var params = 'chat_id=' + chat_id + '&text=' + message + " " + color
-	request.post({
-		headers: {'content-type' : 'application/x-www-form-urlencoded'},
-		url:     telegramURL,
-		body:    params
-	}, function(error, response, body){
-		console.log(body);
+	//var telegramURL = "https://api.telegram.org/bot"+telegramAPIKey+"/sendMessage"
+	var telegramURL = "https://api.telegram.org/bot"+telegramAPIKey+"/sendPhoto";
+	message = "'"+message+"'";
+	var photo = "photar.net/color/white/"+color+"/"+message;
+	request.get({url:"https://"+photo}, function(error, response, body){
+		photo = response.socket._httpMessage.res.request.uri.href;
+		var params = 'chat_id=' + chat_id + '&photo=' + photo;
+		request.post({
+			headers: {'content-type' : 'application/x-www-form-urlencoded'},
+			url:     telegramURL,
+			body:    params
+		}, function(error, response, body){
+			console.log(body);
+		});
 	});
 }
