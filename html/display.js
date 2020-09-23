@@ -91,6 +91,29 @@ function update(message){
 	}	
 }
 
+lastPing = new Date();
+function sendPing(){
+	console.log("sent ping");
+	connection.send(JSON.stringify({type:"ping"}));
+}
+
+function handlePing(){
+	lastPing = new Date();
+	console.log("received ping", "lastPing:",lastPing);
+}
+
+function isAlive(){
+	var now = new Date();
+	if(now - lastPing >= 10){//10 seconds
+		console.log("ping timed out", now - lastPing);
+		location.reload();
+	}
+	else {
+		console.log("still alive", now - lastPing);
+		
+	}
+}
+
 function toggle(element){
     if( $(element).is(":visible")){
         $(element).hide();
@@ -143,15 +166,19 @@ function connect(){
 
 	connection.onopen = function(e){
 		register();
+		setInterval(function() {
+			sendPing();
+		},10000);
+		setInterval(function(){isAlive()},10000);
 	}
 	
 	connection.onclose = function(e){
 		console.log("socket closed, reconnecting in 1 second. ", e.reason);
 		connection.onopen = null;
 		//$("#connectButton").show();
-		setTimeout(function() {
+		setInterval(function() {
 			connect();
-		}, 1000);
+		}, 10000);
 	};
 	 
 	connection.onerror = function(error) {
@@ -177,7 +204,10 @@ function connect(){
 		}
 	  }
 
-	  if(message.type == 'status'){
+		if(message.type == 'ping'){
+			handlePing();
+		}
+		else if(message.type == 'status'){
 			if(message.status == "Send Coffee" || message.color == "red"){
 				coffeeSound.play();
 			}	

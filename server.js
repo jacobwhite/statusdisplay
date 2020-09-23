@@ -34,7 +34,10 @@ wss.on('connection', ws => {
   
     //If message is a status update
     console.log("message type:",msg.type);
-    if(msg.type == "status"){
+	  if(msg.type == "ping"){
+		  ws.send(JSON.stringify({type: "ping"}));
+	  }
+	  else if(msg.type == "status"){
       console.log(msg.type, "updated to", msg.status);
       //saveStatus();
 
@@ -69,7 +72,7 @@ wss.on('connection', ws => {
       //}
     }
 
-    if(msg.type == "getStatus"){
+	  else if(msg.type == "getStatus"){
       var broadcastMessage = {
         type: "getStatus",
         serverVersion: global.serverVersion
@@ -77,13 +80,13 @@ wss.on('connection', ws => {
       wss.broadcast(JSON.stringify(broadcastMessage));
     }
 
-    if(msg.type == "displayStatus"){
+	  else if(msg.type == "displayStatus"){
       msg.serverVersion = serverVersion;
       console.log("broadcasting displayStatus",msg.displayCode, msg.serverVersion);
       wss.broadcast(JSON.stringify(msg));
     }
 
-    if(msg.type == "register"){
+	  else if(msg.type == "register"){
       if(msg.displayCode == undefined){
         ws.displayCode = commonFunctions.generateCode(6);
       }
